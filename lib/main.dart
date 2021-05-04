@@ -6,7 +6,9 @@ import 'dart:convert';
 const request = "https://api.hgbrasil.com/finance?format=json&key=a1e268f9";
 void main() async {
   print(await getData());
-  runApp(MaterialApp(home: Home()));
+  runApp(MaterialApp(
+      home: Home(),
+      theme: ThemeData(hintColor: Colors.amber, primaryColor: Colors.white)));
 }
 
 Future<Map> getData() async {
@@ -20,6 +22,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  double dolar;
+  double euro;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +55,45 @@ class _HomeState extends State<Home> {
                     textAlign: TextAlign.center,
                   ));
                 } else {
-                  return Container(color: Colors.green);
+                  dolar = snapshot.data["results"]["currencies"]["USD"]["buy"];
+                  euro = snapshot.data["results"]["currencies"]["EUR"]["buy"];
+
+                  return SingleChildScrollView(
+                    padding: EdgeInsets.all(10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Icon(Icons.monetization_on,
+                            size: 150, color: Colors.amber),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "Reais",
+                              labelStyle: TextStyle(color: Colors.amber),
+                              border: OutlineInputBorder(),
+                              prefixText: "R\$ "),
+                          style: TextStyle(color: Colors.amber, fontSize: 25.0),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "Dolar",
+                              labelStyle: TextStyle(color: Colors.amber),
+                              border: OutlineInputBorder(),
+                              prefixText: "US\$ "),
+                          style: TextStyle(color: Colors.amber, fontSize: 25.0),
+                        ),
+                        Divider(),
+                        TextField(
+                          decoration: InputDecoration(
+                              labelText: "Euro",
+                              labelStyle: TextStyle(color: Colors.amber),
+                              border: OutlineInputBorder(),
+                              prefixText: "€ "),
+                          style: TextStyle(color: Colors.amber, fontSize: 25.0),
+                        )
+                      ],
+                    ),
+                  );
                 }
             }
           }),
